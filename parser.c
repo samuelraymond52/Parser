@@ -56,7 +56,7 @@ void error();
 
 
 /* main driver */
-i main() { 
+ main() { 
    if ((in_fp = fopen("front.in", "r")) == NULL)
      printf("ERROR - cannot open front.in \n");
    else {
