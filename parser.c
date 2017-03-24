@@ -4,11 +4,16 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+
+
 /* Global declarations */
+
 /* Variables */
+
 int charClass;
 char lexeme [100];
 char nextChar;
+char lastchar;
 int lexLen;
 int token;
 int nextToken;
@@ -34,7 +39,11 @@ int lex();
 #define RIGHT_PAREN 26
 /******************************************************/
 /* main driver */
-main() {
+int main(arx, char *ary[]) {
+	if (arx !=2){
+		printf("usage:\n./parser filename\n\n");
+		exit(0);
+	}
 /* Open the input data file and process its contents */
  if ((in_fp = fopen("front.in", "r")) == NULL)
    printf("ERROR - cannot open front.in \n");
