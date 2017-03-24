@@ -155,6 +155,13 @@ void getNonBlank() {
     getChar();
 }
 
+  factor();
+  while (nextToken == MULT_OP || nextToken == DIV_OP) {
+    lex();
+    factor();
+  }
+  printf("Exit <term>\n");
+}
 /*****************************************************/
 /* lex - a simple lexical analyzer for arithmetic
          expressions */
