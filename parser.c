@@ -19,6 +19,7 @@ int lexLen;
 size_t new_expression_length = 0;
 int token;
 ssize_t get_exression;
+char * expression = NULL;
 int nextToken;
 char endCharacter;
 char * new_expression = NULL;
@@ -154,13 +155,42 @@ void getNonBlank() {
   while (isspace(nextChar))
     getChar();
 }
+void expr() {
+  printf("Enter <expr>\n");
+  term();
+  while (nextToken == ADD_OP || nextToken == SUB_OP) {
+    lex();
+    term();
+  }
+  printf("Exit <expr>\n");
+}
 
+void term() {
+  printf("Enter <term>\n");
   factor();
   while (nextToken == MULT_OP || nextToken == DIV_OP) {
     lex();
     factor();
   }
   printf("Exit <term>\n");
+}
+void factor() {
+  printf("Enter <factor>\n");
+  if (nextToken == IDENT || nextToken == INT_LIT)
+    lex();
+  else {
+    if (nextToken == LEFT_PAREN) {
+      lex();
+      expr();
+      if (nextToken == RIGHT_PAREN)
+        lex();
+      else
+        error();
+    } 
+    else
+      error();
+  }
+  printf("Exit <factor>\n");;
 }
 /*****************************************************/
 /* lex - a simple lexical analyzer for arithmetic
