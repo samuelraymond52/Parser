@@ -18,6 +18,7 @@ char lastchar;
 int lexLen;
 size_t new_expression_length = 0;
 int token;
+ssize_t get_exression;
 int nextToken;
 char endCharacter;
 char * new_expression = NULL;
@@ -58,7 +59,7 @@ void error();
 /* main driver */
  main() { 
    if ((in_fp = fopen("front.in", "r")) == NULL)
-     printf("ERROR - cannot open front.in \n");
+     printf("ERROR can't open front.in \n");
    else {
      while ((get_exression = getline(&new_expression, &new_expression_length, in_fp)) != EOF) {
        indexLine = 0;
@@ -134,7 +135,8 @@ void addChar() {
              input and determine its character class */
 
 void getChar() {
-  if ((nextChar = getc(in_fp)) != EOF) {
+  if (expression [indexLine] != '\n' && expression[indexLine] != '\0') {
+  	  nextChar = expression[indexLine++];
     if (isalpha(nextChar))
       charClass = LETTER;
     else if (isdigit(nextChar))
@@ -183,7 +185,7 @@ int lex() {
 /* Parentheses and operators */
   case UNKNOWN:
     lookup(nextChar);
-    etChar();
+    getChar();
     break;
 /* EOF */
   case EOF:
