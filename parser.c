@@ -16,11 +16,11 @@ int indexLine;
 char nextChar;
 char lastchar;
 int lexLen;
-size_t expression_length = 0;
+size_t new_expression_length = 0;
 int token;
 int nextToken;
 char endCharacter;
-char * expression = NULL;
+char * new_expression = NULL;
 FILE *in_fp, *fopen();
 
 /* Function declarations */
@@ -28,11 +28,19 @@ void addChar();
 void getChar();
 void getNonBlank();
 int lex();
+void getLine();
+void addLine();
+void expr();
+void term();
+void factor();
+void error();
 
 /* Character classes */
 #define LETTER 0
 #define DIGIT 1
+#define NEWLINE 2
 #define UNKNOWN 99
+
 
 /* Token codes */
 #define INT_LIT 10
@@ -48,20 +56,21 @@ int lex();
 
 
 /* main driver */
-int main(arx, char *ary[]) {
-	if (arx !=2){
-		printf("usage:\n./parser filename\n\n");
-		exit(0);
-	}
-/* Open the input data file and process its contents */
- if ((in_fp = fopen("front.in", "r")) == NULL)
-   printf("ERROR - cannot open front.in \n");
- else  {
-   getChar();
-   do  {
-     lex();
-  }  while (nextToken != EOF);
- }
+i main() { 
+   if ((in_fp = fopen("front.in", "r")) == NULL)
+     printf("ERROR - cannot open front.in \n");
+   else {
+     while ((get_exression = getline(&new_expression, &new_expression_length, in_fp)) != EOF) {
+       indexLine = 0;
+       getChar();
+       if (new_expression != NULL) {
+         do {
+           lex();
+           expr();
+         } while (nextToken != EOF);
+       }
+     }
+   }
 }
 
 
@@ -101,12 +110,12 @@ int lookup(char ch) {
     nextToken = DIV_OP;
     break;
 
-     default:
-       addChar();
-       nextToken = EOF;
-       break;
-    }
-    return nextToken;
+  default:
+     addChar();
+     nextToken = EOF;
+     break;
+  }
+  return nextToken;
 }
 
 
@@ -123,6 +132,7 @@ void addChar() {
 /*****************************************************/
 /* getChar - a function to get the next character of
              input and determine its character class */
+
 void getChar() {
   if ((nextChar = getc(in_fp)) != EOF) {
     if (isalpha(nextChar))
